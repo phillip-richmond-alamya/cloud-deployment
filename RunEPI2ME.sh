@@ -4,13 +4,16 @@
 # nextflow run epi2me-labs/wf-human-variation --help
 
 # Genome reference
-ref_fasta=/newvolume/EPI2ME_Analysis/GRCh37.primary_assembly.genome.fa
+ref_fasta=/newvolume/Genomes/GRCh37.primary_assembly.genome.fa
 
 
 # Sample 1 (Proband): A23-BCH-001-P
 sample_id=A23-BCH-001-P
 input_BAM=/newvolume/F126728_2_lanes.bam
 output_dir=/newvolume/EPI2ME_Analysis/A23-BCH-001-P/
+EPI2ME_dir=/newvolume/EPI2ME_Analysis/
+EPI2ME_github_dir=/newvolume/Tools/wf-human-variation/
+mkdir $EPI2ME_dir
 mkdir -p $output_dir
 mkdir -p $output_dir/tmp
 export NXF_TEMP=$output_dir/tmp
@@ -32,10 +35,9 @@ export NXF_TEMP=$output_dir/tmp
 #    --out_dir ${output_dir}
 
 # Running without awsbatch
-nextflow run epi2me-labs/wf-human-variation \
-    -resume \
+nextflow run $EPI2ME_github_dir \
     -w ${output_dir}/workspace \
-    -profile standard \
+    -profile standard,local \
     --snp --sv \
     --bam $input_BAM \
     --ref $ref_fasta \
